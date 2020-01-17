@@ -63,7 +63,6 @@ public class MasterKey {
 		for(int i = 0; i < plain.length; i++) {
 			tmp = BigInteger.valueOf((long)plain[i]);
 			tmp = tmp.modPow(ee, n);
-			System.out.println(tmp.toString());
 			digest.add(tmp.toByteArray());
 		}
 		return digest;
@@ -72,6 +71,7 @@ public class MasterKey {
 		BigInteger tmp;
 		BigInteger dd = BigInteger.valueOf(this.d);
 		BigInteger n = BigInteger.valueOf(this.phi);
+		//System.out.println(cipher.size());
 		char[] plain = new char[cipher.size()];
 		for(int i = 0; i < cipher.size();i++) {
 			tmp = new BigInteger(cipher.get(i));
