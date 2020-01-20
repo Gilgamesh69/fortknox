@@ -8,33 +8,41 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CodexUtil {
-	
-	
-	@SuppressWarnings("unchecked")
-	protected HashMap<String,ArrayList<byte[]>> loadCodex() {
-		HashMap<String,ArrayList<byte[]>> codex;
-	      try {
-	         FileInputStream fileIn = new FileInputStream("codex.ser");
+public class MasterPassword {
+	public MasterPassword() {
+		
+	}
+	public boolean authenticate(String password) {
+		ArrayList<byte[]> cipher;
+		try {
+	         FileInputStream fileIn = new FileInputStream("Master.ser");
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         codex = (HashMap<String,ArrayList<byte[]>>) in.readObject();
+	         cipher = (ArrayList<byte[]>) in.readObject();
 	         in.close();
 	         fileIn.close();
 	      } catch (IOException i) {
 	         i.printStackTrace();
-	         return null;
+	         return false;
 	      } catch (ClassNotFoundException c) {
 	         System.out.println("Codex not found");
 	         c.printStackTrace();
-	         return null;
+	         return false;
 	      }
-	      return codex;
+		MasterKey m = new MasterKey();
+		if(password.contentEquals(m.decrypt(cipher))) {
+			return true;
+		}else {
+			return false;
+		}
+
 	}
-	protected void saveCodex(HashMap<String,ArrayList<byte[]>> codex) {
+	public void saveMasterPassword(String password) {
+		MasterKey m = new MasterKey();
+		ArrayList<byte[]> pass = m.encrypt(password);;
 		try { 
-            FileOutputStream fileOut = new FileOutputStream("codex.ser");
+            FileOutputStream fileOut = new FileOutputStream("Master.ser");
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(codex);
+            objectOut.writeObject(pass);
             objectOut.close();
             System.out.println("The Object  was succesfully written to a file");
  

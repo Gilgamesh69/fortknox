@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class MasterKey {
-	private String masterPassword;
 	private final BigInteger P;
 	private final BigInteger Q;
 	private final BigInteger PHI;
@@ -30,29 +29,36 @@ public class MasterKey {
 	public ArrayList<byte[]> encryptBIG(String text) {
 		char[] plain = text.toCharArray();
 		ArrayList<byte[]> digest = new ArrayList<byte[]>();
-		BigInteger tmp = new BigInteger("0");
+		BigInteger tmp;
 		for(int i = 0; i < plain.length; i++) {
-			System.out.println((long)plain[i]);
+			//System.out.println((long)plain[i]);
 			tmp = BigInteger.valueOf((long)plain[i]);
 			tmp = tmp.pow(this.E.intValue());
 			tmp = tmp.mod(this.PHI);
-			System.out.println(tmp.toString());
+			//System.out.println(tmp.toString());
 			digest.add(tmp.toByteArray());
-			break;
 		}
 		return digest;
 	}
-	public void decryptBIG(ArrayList<byte[]> cipher) {
+	public String decryptBIG(ArrayList<byte[]> cipher) {
 		BigInteger tmp;
 		char[] plain = new char[cipher.size()];
 		for(int i = 0; i < cipher.size();i++) {
 			tmp = new BigInteger(cipher.get(i));
-			tmp = tmp.modPow(this.D, this.PHI);
-			System.out.println(tmp.longValue());
-			break;
-			//plain[i] = (char) tmp.intValueExact();
+			//power function
+			int z = 0;
+			BigInteger j = new BigInteger("0");
+			while(j.compareTo(this.D) == -1) {
+				tmp = tmp.multiply(tmp);
+				j = j.add(BigInteger.ONE);
+				System.out.println(z);
+				z++;
+			}
+			tmp = tmp.mod(this.PHI);
+			System.out.println((char) tmp.intValueExact());
+			plain[i] = (char) tmp.intValueExact();
 		}
-		//System.out.println(String.copyValueOf(plain));
+		return String.copyValueOf(plain);
 	}
 	public ArrayList<byte[]> encrypt(String text){
 		char[] plain = text.toCharArray();

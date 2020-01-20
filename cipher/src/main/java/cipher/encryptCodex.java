@@ -21,4 +21,10 @@ public class encryptCodex {
 		ArrayList<byte[]> site_cipher = m.encrypt(site);
 		return site_cipher;
 	}
+	public ArrayList<byte[]> cipherPasswordBIG(){
+		MasterKey m = new MasterKey();
+		PasswordGenerator g = new PasswordGenerator(this.digestLength);
+		ArrayList<byte[]> password_cipher = m.encryptBIG(g.getPASSWORD());
+		return password_cipher;
+	}
 }
