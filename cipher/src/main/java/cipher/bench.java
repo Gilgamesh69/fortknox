@@ -9,8 +9,8 @@ public class bench {
 		Codex p = new Codex();
 		String[] sites = {"reddit","google","tinder","fruit","yy","zz","aa","ll","foo","bar"};
 		MasterPassword mp = new MasterPassword();
-		mp.saveMasterPassword("loganiscool");
-		System.out.println(mp.authenticate("loganiscool"));
+		mp.saveMasterPassword("01540198");
+		System.out.println(mp.authenticate("01540198"));
 		//for(int i = 0; i< 10; i++) {
 		//	p.addPass(sites[i]);
 		//}
