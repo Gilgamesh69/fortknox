@@ -75,10 +75,14 @@ class CipherGUI extends JFrame implements ActionListener {
     private void makeOpenedPanel() {
     	opened_panel = new JPanel();
     	codex.loadCodex();
-    	opened_panel.setLayout(new GridLayout(codex.length + 1, 2));
+    	opened_panel.setLayout(new GridLayout(codex.length + 1, 2,1,2));
         //Initialize the names of the columns
         for (String i : codex.codex.keySet()) { 
         	opened_panel.add(new JLabel(i));
+        	JTextField pass = new JTextField(16);
+        	pass.setText(codex.getPass(i));
+        	opened_panel.add(pass);
         }
+
     }
 } 
