@@ -1,5 +1,6 @@
 package cipher;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -30,9 +31,9 @@ class CipherGUI extends JFrame implements ActionListener {
         // create a new frame to store text field and button 
     	frame = new JFrame("FortKnox"); 
         // create a label to display text 
-    	enter_password_label = new JLabel("enter password");
+    	enter_password_label = new JLabel("Enter password: ");
         // create a new button 
-    	submit_password = new JButton("submit"); 
+    	submit_password = new JButton("Submit"); 
   
         // create a object of the text class 
         CipherGUI te = new CipherGUI(); 
@@ -47,9 +48,10 @@ class CipherGUI extends JFrame implements ActionListener {
         JPanel firstPanel = new JPanel(); 
   
         // add buttons and textfield to panel 
+        firstPanel.add(enter_password_label); 
         firstPanel.add(enter_password); 
         firstPanel.add(submit_password); 
-        firstPanel.add(enter_password_label); 
+
         // add panel to frame 
         frame.add(firstPanel); 
         // set the size of frame 
@@ -60,7 +62,7 @@ class CipherGUI extends JFrame implements ActionListener {
     // if the vutton is pressed 
     public void actionPerformed(ActionEvent e){ 
         String s = e.getActionCommand(); 
-        if (s.equals("submit")) { 
+        if (s.equals("Submit")) { 
             // set the text of the label to the text of the field 
         	//enter_password_label.setText("");
         	if(mp.authenticate(enter_password.getText()))
@@ -75,9 +77,12 @@ class CipherGUI extends JFrame implements ActionListener {
     private void makeOpenedPanel() {
     	opened_panel = new JPanel();
     	codex.loadCodex();
-    	opened_panel.setLayout(new GridLayout(codex.length + 1, 2,1,2));
+    	opened_panel.setLayout(new GridLayout(codex.length + 1, 4,1,2));
         //Initialize the names of the columns
-        for (String i : codex.codex.keySet()) { 
+        for (String i : codex.codex.keySet()) {
+        	JButton del = new JButton("Delete");
+        	del.setBackground(Color.RED);
+        	opened_panel.add(del);
         	opened_panel.add(new JLabel(i));
         	JTextField pass = new JTextField(16);
         	pass.setText(codex.getPass(i));
