@@ -1,7 +1,16 @@
 package cipher;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -12,6 +21,7 @@ class CipherGUI extends JFrame implements ActionListener {
     static JTextField enter_password; 
     // JFrame 
     static JFrame frame; 
+    
     // JButton 
     static JButton submit_password; 
     // label to display text 
@@ -20,8 +30,7 @@ class CipherGUI extends JFrame implements ActionListener {
     static JPanel opened_panel;
     private static Codex codex;
     // default constructor 
-    CipherGUI() 
-    { 
+    CipherGUI() { 
     } 
   
     // main class 
@@ -30,13 +39,14 @@ class CipherGUI extends JFrame implements ActionListener {
     	mp = new MasterPassword();
         // create a new frame to store text field and button 
     	frame = new JFrame("FortKnox"); 
+    	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         // create a label to display text 
     	enter_password_label = new JLabel("Enter password: ");
         // create a new button 
     	submit_password = new JButton("Submit"); 
   
         // create a object of the text class 
-        CipherGUI te = new CipherGUI(); 
+        CipherGUI_2 te = new CipherGUI_2(); 
   
         // addActionListener to button 
         submit_password.addActionListener(te); 
@@ -59,7 +69,7 @@ class CipherGUI extends JFrame implements ActionListener {
         frame.show(); 
     } 
   
-    // if the vutton is pressed 
+    // if the button is pressed 
     public void actionPerformed(ActionEvent e){ 
         String s = e.getActionCommand(); 
         if (s.equals("Submit")) { 
@@ -75,19 +85,98 @@ class CipherGUI extends JFrame implements ActionListener {
         } 
     }
     private void makeOpenedPanel() {
+    	//unlocked view
     	opened_panel = new JPanel();
+    	GridBagLayout grid = new GridBagLayout();
+    	GridBagConstraints gbc = new GridBagConstraints();  
+        opened_panel.setLayout(grid); 
+        gbc.fill = GridBagConstraints.HORIZONTAL;  
+        gbc.gridx = 0;  
+        gbc.gridy = 0;
+        JButton add_password  = new JButton("Add");
+        opened_panel.add(add_password);
+        add_password.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                JDialog addSite = new JDialog(frame, "Add New Site");
+                addSite.setSize(300, 200);
+                JPanel add_site_panel = new JPanel(); 
+                // create a label 
+                JLabel l = new JLabel("Site:");
+                add_site_panel.add(l);
+                final JTextField new_site = new JTextField(20);
+                add_site_panel.add(new_site);
+                // setsize of dialog 
+                add_site_panel.setSize(300, 200); 
+                JButton add_new = new JButton("enter");
+                add_new.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						codex.addPass(new_site.getText());
+						codex.saveCodex();
+						makeOpenedPanel();
+	        			frame.setContentPane(opened_panel);
+	            		frame.invalidate();
+	            		frame.validate();
+						
+					}
+                });
+                add_site_panel.add(add_new);
+                addSite.add(add_site_panel);
+                // set visibility of dialog 
+                addSite.setVisible(true);
+        	}
+        });
     	codex.loadCodex();
-    	opened_panel.setLayout(new GridLayout(codex.length + 1, 4,1,2));
+    	//opened_panel.setLayout(new GridLayout(codex.length + 1, 4,1,2));
         //Initialize the names of the columns
+    	int cnt = 1;
         for (String i : codex.codex.keySet()) {
-        	JButton del = new JButton("Delete");
+        	gbc.gridx = 0;  
+            gbc.gridy = cnt;
+            gbc.ipady = 10;  
+            gbc.ipadx = 10;
+            gbc.gridwidth = 1;
+            // delete button
+        	JButton del = new JButton("Del");
+        	del.setPreferredSize(new Dimension(50,20));
         	del.setBackground(Color.RED);
-        	opened_panel.add(del);
-        	opened_panel.add(new JLabel(i));
-        	JTextField pass = new JTextField(16);
+        	final String j = i;
+        	del.addActionListener(new ActionListener() {
+        		public void actionPerformed(ActionEvent e) {
+        			codex.codex.remove(j);
+        			codex.saveCodex();
+        			makeOpenedPanel();
+        			frame.setContentPane(opened_panel);
+            		frame.invalidate();
+            		frame.validate();
+        		}
+        	});
+        	
+        	opened_panel.add(del,gbc);
+        	gbc.gridx = 1;
+        	gbc.ipadx = 20;
+        	opened_panel.add(new JLabel(i),gbc);
+        	gbc.gridx = 2; 
+        	JTextField pass = new JTextField(25);
         	pass.setText(codex.getPass(i));
-        	opened_panel.add(pass);
+        	gbc.gridwidth = 3;
+        	opened_panel.add(pass,gbc);
+        	//copy password button
+        	gbc.gridx = 5;
+        	gbc.ipadx = 10;
+        	JButton copy = new JButton("copy");
+        	copy.setPreferredSize(new Dimension(60,20));
+        	copy.setBackground(Color.gray);
+        	final String getPass = pass.getText();
+        	copy.addActionListener(new ActionListener() {
+        		public void actionPerformed(ActionEvent e) {
+        			StringSelection stringSelection = new StringSelection (getPass);
+        			Clipboard clpbrd = Toolkit.getDefaultToolkit ().getSystemClipboard ();
+        			clpbrd.setContents (stringSelection, null);
+        		}
+        	});
+        	opened_panel.add(copy,gbc);
+        	cnt++;
         }
 
     }
-} 
+}

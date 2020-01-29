@@ -30,8 +30,7 @@ class CipherGUI_2 extends JFrame implements ActionListener {
     static JPanel opened_panel;
     private static Codex codex;
     // default constructor 
-    CipherGUI_2() 
-    { 
+    CipherGUI_2() { 
     } 
   
     // main class 
@@ -86,6 +85,7 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         } 
     }
     private void makeOpenedPanel() {
+    	//unlocked view
     	opened_panel = new JPanel();
     	GridBagLayout grid = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();  
@@ -93,6 +93,20 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridx = 0;  
         gbc.gridy = 0;
+        //digest button
+        JLabel change_digest_label = new JLabel("Change generated password length");
+        opened_panel.add(change_digest_label,gbc);
+        gbc.gridx = 1; 
+        JSpinner digest_changer = new JSpinner();
+        opened_panel.add(digest_changer);
+        gbc.gridx = 2; 
+        JButton change_digest_button = new JButton("Change");
+        final int new_digest = (Integer) digest_changer.getValue();
+        change_digest_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				codex.setDigest(new_digest);
+			}});
+        opened_panel.add(change_digest_button);
         JButton add_password  = new JButton("Add");
         opened_panel.add(add_password);
         add_password.addActionListener(new ActionListener() {

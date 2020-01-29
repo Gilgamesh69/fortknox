@@ -8,19 +8,20 @@ public class Codex implements java.io.Serializable{
 	private static final long serialVersionUID = -7578649689932420582L;
 	public HashMap<String,ArrayList<byte[]>> codex;
 	public int length;
-	
+	private int digest;
 	public Codex() {
 		this.codex = new HashMap<String,ArrayList<byte[]>>();
+		this.digest = 30;
 	}
 	public void addPassBIG(String site) {
 		encryptCodex ec = new encryptCodex();
-		ec.setDigestLength(30);
+		ec.setDigestLength(this.digest);
 		codex.put(site,ec.cipherPasswordBIG());
 		this.length++;
 	}
 	public void addPass(String site) {
 		encryptCodex ec = new encryptCodex();
-		ec.setDigestLength(30);
+		ec.setDigestLength(this.digest);
 		codex.put(site,ec.cipherPassword());
 		this.length++;
 	}
@@ -42,6 +43,12 @@ public class Codex implements java.io.Serializable{
 	public void saveCodex() {
 		CodexUtil code = new CodexUtil();
 		code.saveCodex(this.codex);
+	}
+	public int getDigest() {
+		return this.digest;
+	}
+	public void setDigest(int n) {
+		this.digest = n;
 	}
 
 }
