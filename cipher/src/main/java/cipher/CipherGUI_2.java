@@ -88,7 +88,7 @@ class CipherGUI_2 extends JFrame implements ActionListener {
     private void makeOpenedPanel() {
     	//unlocked view
     	opened_panel = new JPanel();
-    	//opened_panel.add(new JScrollPane(opened_panel));
+    	opened_panel.setSize(700, 600);
     	
     	GridBagLayout grid = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();  
@@ -102,7 +102,7 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         gbc.gridx = 1; 
         final JSpinner digest_changer = new JSpinner();
         digest_changer.setValue(new_digest);
-        opened_panel.add(digest_changer);
+        opened_panel.add(digest_changer,gbc);
         gbc.gridx = 2; 
         JButton change_digest_button = new JButton("Change");
         
@@ -113,9 +113,11 @@ class CipherGUI_2 extends JFrame implements ActionListener {
 				codex.setDigest(new_digest);
 
 			}});
-        opened_panel.add(change_digest_button);
+        opened_panel.add(change_digest_button,gbc);
+        //add site button
+        gbc.gridx = 3;
         JButton add_password  = new JButton("Add");
-        opened_panel.add(add_password);
+        opened_panel.add(add_password,gbc);
         add_password.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
                 JDialog addSite = new JDialog(frame, "Add New Site");
@@ -147,7 +149,11 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         	}
         });
     	codex.loadCodex();
-    	//opened_panel.setLayout(new GridLayout(codex.length + 1, 4,1,2));
+
+    	//scroll pane for password list
+    	JPanel opened_scroll_panel = new JPanel();
+    	opened_scroll_panel.setLayout(grid);
+    	//opened_scroll_panel.setSize(600, 600);
         //Initialize the names of the columns
     	int cnt = 1;
         for (String i : codex.codex.keySet()) {
@@ -172,15 +178,15 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         		}
         	});
         	
-        	opened_panel.add(del,gbc);
+        	opened_scroll_panel.add(del,gbc);
         	gbc.gridx = 1;
         	gbc.ipadx = 20;
-        	opened_panel.add(new JLabel(i),gbc);
+        	opened_scroll_panel.add(new JLabel(i),gbc);
         	gbc.gridx = 2; 
         	JTextField pass = new JTextField(25);
         	pass.setText(codex.getPass(i));
         	gbc.gridwidth = 3;
-        	opened_panel.add(pass,gbc);
+        	opened_scroll_panel.add(pass,gbc);
         	//copy password button
         	gbc.gridx = 5;
         	gbc.ipadx = 10;
@@ -191,13 +197,24 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         	copy.addActionListener(new ActionListener() {
         		public void actionPerformed(ActionEvent e) {
         			StringSelection stringSelection = new StringSelection (getPass);
-        			Clipboard clpbrd = Toolkit.getDefaultToolkit ().getSystemClipboard ();
+        			Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard ();
         			clpbrd.setContents (stringSelection, null);
         		}
         	});
-        	opened_panel.add(copy,gbc);
+        	opened_scroll_panel.add(copy,gbc);
         	cnt++;
         }
-
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JScrollPane opened_scroll_pane = new JScrollPane(opened_scroll_panel);
+        //opened_scroll_pane.setSize(600, 600);
+    	//opened_scroll_pane.setLayout(new ScrollPaneLayout());
+    	//JScrollBar vertScrollBar = new JScrollBar();
+    	//vertScrollBar.setUnitIncrement(100);
+    	//opened_scroll_pane.setVerticalScrollBar(vertScrollBar);
+    	gbc.gridwidth = 6;
+    	gbc.gridheight = 6;
+        opened_panel.add(opened_scroll_pane,gbc);
+        //frame.pack();
     }
 }
