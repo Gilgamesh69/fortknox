@@ -7,6 +7,9 @@ public class encryptCodex {
 	
 	public encryptCodex() {
 	}
+	public int getDigest() {
+		return this.digestLength;
+	}
 	public void setDigestLength(int n) {
 		this.digestLength = n;
 	}

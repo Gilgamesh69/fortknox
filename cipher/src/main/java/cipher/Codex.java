@@ -22,6 +22,7 @@ public class Codex implements java.io.Serializable{
 	public void addPass(String site) {
 		encryptCodex ec = new encryptCodex();
 		ec.setDigestLength(this.digest);
+		System.out.println(ec.getDigest());
 		codex.put(site,ec.cipherPassword());
 		this.length++;
 	}

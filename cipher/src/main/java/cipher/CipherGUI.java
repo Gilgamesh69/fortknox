@@ -29,6 +29,7 @@ class CipherGUI extends JFrame implements ActionListener {
     static MasterPassword mp;
     static JPanel opened_panel;
     private static Codex codex;
+    private static int new_digest = 25;
     // default constructor 
     CipherGUI() { 
     } 
@@ -46,7 +47,7 @@ class CipherGUI extends JFrame implements ActionListener {
     	submit_password = new JButton("Submit"); 
   
         // create a object of the text class 
-        CipherGUI_2 te = new CipherGUI_2(); 
+        CipherGUI te = new CipherGUI(); 
   
         // addActionListener to button 
         submit_password.addActionListener(te); 
@@ -65,7 +66,7 @@ class CipherGUI extends JFrame implements ActionListener {
         // add panel to frame 
         frame.add(firstPanel); 
         // set the size of frame 
-        frame.setSize(500, 500); 
+        frame.setSize(700, 600); 
         frame.show(); 
     } 
   
@@ -87,12 +88,32 @@ class CipherGUI extends JFrame implements ActionListener {
     private void makeOpenedPanel() {
     	//unlocked view
     	opened_panel = new JPanel();
+    	//opened_panel.add(new JScrollPane(opened_panel));
+    	
     	GridBagLayout grid = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();  
         opened_panel.setLayout(grid); 
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridx = 0;  
         gbc.gridy = 0;
+        //digest button
+        JLabel change_digest_label = new JLabel("Change generated password length");
+        opened_panel.add(change_digest_label,gbc);
+        gbc.gridx = 1; 
+        final JSpinner digest_changer = new JSpinner();
+        digest_changer.setValue(new_digest);
+        opened_panel.add(digest_changer);
+        gbc.gridx = 2; 
+        JButton change_digest_button = new JButton("Change");
+        
+        change_digest_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new_digest = (Integer) digest_changer.getValue();
+				digest_changer.setValue(new_digest);
+				codex.setDigest(new_digest);
+
+			}});
+        opened_panel.add(change_digest_button);
         JButton add_password  = new JButton("Add");
         opened_panel.add(add_password);
         add_password.addActionListener(new ActionListener() {
