@@ -195,6 +195,7 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         	bottom_panel.add(new JLabel(i),gbc);
         	gbc.gridx = 2; 
         	
+        	
         	JTextField pass = new JTextField(25);
         	pass.setText(codex.getPass(i));
         	gbc.gridwidth = 3;
