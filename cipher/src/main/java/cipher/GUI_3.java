@@ -6,17 +6,27 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Map.Entry;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*; 
-class CipherGUI_2 extends JFrame implements ActionListener { 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+public class GUI_3 extends JFrame implements ActionListener{
+	
     // JTextField 
     static JTextField enter_password; 
     // JFrame 
@@ -27,30 +37,25 @@ class CipherGUI_2 extends JFrame implements ActionListener {
     // label to display text 
     static JLabel enter_password_label; 
     static MasterPassword mp;
-    static JPanel opened_panel;
+    static JPanel opened_panel = new JPanel();
     private static Codex codex;
     private static int new_digest = 25;
-    // default constructor 
-    CipherGUI_2() { 
-    } 
-  
-    // main class 
-    public static void main(String[] args) {
+    
+    GUI_3(){
+    	
+    }
+    
+	public static void main(String[] args) {
     	codex = new Codex();
     	mp = new MasterPassword();
-        // create a new frame to store text field and button 
-    	frame = new JFrame("FortKnox"); 
-    	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        // create a label to display text 
+		final JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	enter_password_label = new JLabel("Enter password: ");
         // create a new button 
     	submit_password = new JButton("Submit"); 
-  
-        // create a object of the text class 
-        CipherGUI_2 te = new CipherGUI_2(); 
-  
+    	GUI_3 gui = new GUI_3();
         // addActionListener to button 
-        submit_password.addActionListener(te); 
+        submit_password.addActionListener(gui);
   
         // create a object of JTextField with 16 columns 
         enter_password = new JTextField(16); 
@@ -63,13 +68,11 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         firstPanel.add(enter_password); 
         firstPanel.add(submit_password); 
 
-        // add panel to frame 
-        frame.add(firstPanel); 
-        // set the size of frame 
-        frame.setSize(800, 600); 
-        frame.show(); 
-    } 
-  
+		frame.setContentPane(firstPanel);
+		frame.setSize(500, 500);
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
+		}
     // if the button is pressed 
     public void actionPerformed(ActionEvent e){ 
         String s = e.getActionCommand(); 
@@ -85,17 +88,12 @@ class CipherGUI_2 extends JFrame implements ActionListener {
             enter_password.setText("  "); 
         } 
     }
-    private void makeOpened() {
-    	//unlocked view
-    	
-    	opened_panel = new JPanel();
-    	opened_panel.setSize(300, 600);
-    	opened_panel.setLayout(new FlowLayout());
+	public static void makeOpened() {
+		opened_panel.setLayout(new FlowLayout());
 		
 		JPanel top_panel = new JPanel();
 		JPanel bottom_panel = new JPanel();
-		top_panel.setSize(300, 300);
-		bottom_panel.setSize(300, 300);
+		
     	GridBagLayout grid = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();  
     	
@@ -217,9 +215,9 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         	cnt++;
         }
 		JScrollPane scrollPane = new JScrollPane(bottom_panel);
-		scrollPane.setSize(300, 300);
-    	//opened_panel.add(top_panel,BorderLayout.NORTH);
-        opened_panel.add(scrollPane);
+    	opened_panel.add(top_panel,BorderLayout.NORTH);
+        opened_panel.add(scrollPane,BorderLayout.SOUTH);
 	}
 		
+
 }
