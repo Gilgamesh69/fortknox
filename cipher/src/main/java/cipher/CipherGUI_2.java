@@ -218,7 +218,7 @@ class CipherGUI_2 extends JFrame implements ActionListener {
         }
 		JScrollPane scrollPane = new JScrollPane(bottom_panel);
 		scrollPane.setSize(300, 300);
-    	//opened_panel.add(top_panel,BorderLayout.NORTH);
+    	opened_panel.add(top_panel,BorderLayout.NORTH);
         opened_panel.add(scrollPane);
 	}
 		
