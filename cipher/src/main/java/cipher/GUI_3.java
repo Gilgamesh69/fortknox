@@ -6,27 +6,17 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Map.Entry;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-public class GUI_3 extends JFrame implements ActionListener{
-	
+import javax.swing.*; 
+class GUI_3 extends JFrame implements ActionListener { 
     // JTextField 
     static JTextField enter_password; 
     // JFrame 
@@ -37,25 +27,30 @@ public class GUI_3 extends JFrame implements ActionListener{
     // label to display text 
     static JLabel enter_password_label; 
     static MasterPassword mp;
-    static JPanel opened_panel = new JPanel();
+    static JPanel opened_panel;
     private static Codex codex;
     private static int new_digest = 25;
-    
-    GUI_3(){
-    	
-    }
-    
-	public static void main(String[] args) {
+    // default constructor 
+    GUI_3() { 
+    } 
+  
+    // main class 
+    public static void main(String[] args) {
     	codex = new Codex();
     	mp = new MasterPassword();
-		final JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // create a new frame to store text field and button 
+    	frame = new JFrame("FortKnox"); 
+    	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // create a label to display text 
     	enter_password_label = new JLabel("Enter password: ");
         // create a new button 
     	submit_password = new JButton("Submit"); 
-    	GUI_3 gui = new GUI_3();
+  
+        // create a object of the text class 
+    	GUI_3 te = new GUI_3(); 
+  
         // addActionListener to button 
-        submit_password.addActionListener(gui);
+        submit_password.addActionListener(te); 
   
         // create a object of JTextField with 16 columns 
         enter_password = new JTextField(16); 
@@ -68,11 +63,13 @@ public class GUI_3 extends JFrame implements ActionListener{
         firstPanel.add(enter_password); 
         firstPanel.add(submit_password); 
 
-		frame.setContentPane(firstPanel);
-		frame.setSize(500, 500);
-		frame.setLocationByPlatform(true);
-		frame.setVisible(true);
-		}
+        // add panel to frame 
+        frame.add(firstPanel); 
+        // set the size of frame 
+        frame.setSize(600, 400); 
+        frame.show(); 
+    } 
+  
     // if the button is pressed 
     public void actionPerformed(ActionEvent e){ 
         String s = e.getActionCommand(); 
@@ -88,12 +85,17 @@ public class GUI_3 extends JFrame implements ActionListener{
             enter_password.setText("  "); 
         } 
     }
-	public static void makeOpened() {
-		opened_panel.setLayout(new FlowLayout());
+    private void makeOpened() {
+    	//unlocked view
+    	
+    	opened_panel = new JPanel();
+    	opened_panel.setSize(300, 600);
+    	opened_panel.setLayout(new BorderLayout());
 		
 		JPanel top_panel = new JPanel();
 		JPanel bottom_panel = new JPanel();
-		
+		top_panel.setSize(300, 300);
+		bottom_panel.setSize(300, 300);
     	GridBagLayout grid = new GridBagLayout();
     	GridBagConstraints gbc = new GridBagConstraints();  
     	
@@ -193,6 +195,7 @@ public class GUI_3 extends JFrame implements ActionListener{
         	bottom_panel.add(new JLabel(i),gbc);
         	gbc.gridx = 2; 
         	
+        	
         	JTextField pass = new JTextField(25);
         	pass.setText(codex.getPass(i));
         	gbc.gridwidth = 3;
@@ -215,9 +218,21 @@ public class GUI_3 extends JFrame implements ActionListener{
         	cnt++;
         }
 		JScrollPane scrollPane = new JScrollPane(bottom_panel);
+		scrollPane.setSize(300, 300);
+		JPanel south = new JPanel();
+		JPanel north = new JPanel();
+		JPanel east = new JPanel();
+		JPanel west = new JPanel();
+		east.setSize(100, 600);
+		west.setSize(100, 600);
+		south.setSize(600, 200);
     	opened_panel.add(top_panel,BorderLayout.NORTH);
-        opened_panel.add(scrollPane,BorderLayout.SOUTH);
+    	//opened_panel.add(north,BorderLayout.NORTH);
+    	opened_panel.add(east,BorderLayout.EAST);
+    	opened_panel.add(west,BorderLayout.WEST);
+        opened_panel.add(scrollPane,BorderLayout.CENTER);
+        opened_panel.add(south,BorderLayout.SOUTH);
+        
 	}
 		
-
 }
