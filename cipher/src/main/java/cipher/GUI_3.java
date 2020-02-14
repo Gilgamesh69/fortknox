@@ -3,24 +3,22 @@ package cipher;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Map.Entry;
 
 import javax.swing.*; 
 class GUI_3 extends JFrame implements ActionListener { 
     // JTextField 
     static JTextField enter_password; 
     // JFrame 
-    static JFrame frame; 
+    static JFrame frame;
+    
     
     // JButton 
     static JButton submit_password; 
@@ -41,23 +39,24 @@ class GUI_3 extends JFrame implements ActionListener {
         // create a new frame to store text field and button 
     	frame = new JFrame("FortKnox"); 
     	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         // create a label to display text 
     	enter_password_label = new JLabel("Enter password: ");
+
         // create a new button 
     	submit_password = new JButton("Submit"); 
   
         // create a object of the text class 
-    	GUI_3 te = new GUI_3(); 
-  
+    	GUI_3 gui = new GUI_3(); 
+    	
         // addActionListener to button 
-        submit_password.addActionListener(te); 
-  
+        submit_password.addActionListener(gui); 
         // create a object of JTextField with 16 columns 
         enter_password = new JTextField(16); 
   
         // create a panel to add buttons and textfield 
         JPanel firstPanel = new JPanel(); 
-  
+        firstPanel.setBackground(Color.GRAY);
         // add buttons and textfield to panel 
         firstPanel.add(enter_password_label); 
         firstPanel.add(enter_password); 
@@ -66,7 +65,10 @@ class GUI_3 extends JFrame implements ActionListener {
         // add panel to frame 
         frame.add(firstPanel); 
         // set the size of frame 
+        ImageIcon img = new ImageIcon("lock2.png");
+    	frame.setIconImage(img.getImage());
         frame.setSize(600, 400); 
+        frame.setVisible(true); 
         frame.show(); 
     } 
   
@@ -91,9 +93,11 @@ class GUI_3 extends JFrame implements ActionListener {
     	opened_panel = new JPanel();
     	opened_panel.setSize(300, 600);
     	opened_panel.setLayout(new BorderLayout());
-		
+		opened_panel.setBackground(Color.darkGray);
 		JPanel top_panel = new JPanel();
+		top_panel.setBackground(Color.LIGHT_GRAY);
 		JPanel bottom_panel = new JPanel();
+		bottom_panel.setBackground(Color.gray);
 		top_panel.setSize(300, 300);
 		bottom_panel.setSize(300, 300);
     	GridBagLayout grid = new GridBagLayout();
