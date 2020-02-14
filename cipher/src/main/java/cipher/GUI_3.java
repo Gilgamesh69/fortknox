@@ -181,12 +181,39 @@ class GUI_3 extends JFrame implements ActionListener {
         	final String j = i;
         	del.addActionListener(new ActionListener() {
         		public void actionPerformed(ActionEvent e) {
-        			codex.codex.remove(j);
-        			codex.saveCodex();
-        			makeOpened();
-        			frame.setContentPane(opened_panel);
-            		frame.invalidate();
-            		frame.validate();
+        			final JDialog delSite = new JDialog(frame, "ARE YOU SURE?");
+        			delSite.setSize(300, 200);
+                    JPanel del_site_panel = new JPanel(); 
+                    // create a label 
+                    JLabel l = new JLabel("MASTER:");
+                    del_site_panel.add(l);
+                    final JTextField del_site = new JTextField(20);
+                    del_site_panel.add(del_site);
+                    // setsize of dialog 
+                    del_site_panel.setSize(300, 200); 
+                    JButton del_button = new JButton("enter");
+                    del_button.addActionListener(new ActionListener() {
+
+						public void actionPerformed(ActionEvent e) {
+							if(mp.authenticate(del_site.getText())) {
+			        			codex.codex.remove(j);
+			        			codex.saveCodex();
+			        			makeOpened();
+			        			frame.setContentPane(opened_panel);
+			            		frame.invalidate();
+			            		frame.validate();
+			            		delSite.dispose();
+			            		 
+							}
+							del_site.setText("  ");
+						}
+                    	
+                    });
+                    del_site_panel.add(del_button);
+                    delSite.add(del_site_panel);
+                    // set visibility of dialog 
+                    delSite.setVisible(true);
+
         		}
         	});
         	bottom_panel.add(del,gbc);
