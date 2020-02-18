@@ -67,6 +67,7 @@ class GUI_3 extends JFrame implements ActionListener {
         // set the size of frame 
         ImageIcon img = new ImageIcon("lock2.png");
     	frame.setIconImage(img.getImage());
+    	//frame.setUndecorated(true);
         frame.setSize(600, 400); 
         frame.setVisible(true); 
         frame.show(); 
@@ -251,7 +252,7 @@ class GUI_3 extends JFrame implements ActionListener {
 		JScrollPane scrollPane = new JScrollPane(bottom_panel);
 		scrollPane.setSize(300, 300);
 		JPanel south = new JPanel();
-		JPanel north = new JPanel();
+		//JPanel north = new JPanel();
 		JPanel east = new JPanel();
 		JPanel west = new JPanel();
 		east.setSize(100, 600);
