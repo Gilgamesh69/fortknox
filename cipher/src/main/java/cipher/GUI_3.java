@@ -3,33 +3,33 @@ package cipher;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
 import javax.swing.*; 
-class GUI_3 extends JFrame implements ActionListener { 
-    // JTextField 
-    static JTextField enter_password; 
+public class GUI_3 extends JFrame implements ActionListener { 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// JTextField 
+	private static JTextField enter_password; 
     // JFrame 
-    static JFrame frame;
-    
-    
+    private static JFrame frame;
     // JButton 
-    static JButton submit_password; 
+    private static JButton submit_password; 
     // label to display text 
-    static JLabel enter_password_label; 
-    static MasterPassword mp;
-    static JPanel opened_panel;
+    private static JLabel enter_password_label; 
+    private static MasterPassword mp;
+    private static JPanel opened_panel;
     private static Codex codex;
     private static int new_digest = 25;
     // default constructor 
-    GUI_3() { 
+    public GUI_3() { 
     } 
   
     // main class 
@@ -70,7 +70,7 @@ class GUI_3 extends JFrame implements ActionListener {
     	//frame.setUndecorated(true);
         frame.setSize(600, 400); 
         frame.setVisible(true); 
-        frame.show(); 
+        //frame.show(); 
     } 
   
     // if the button is pressed 
@@ -88,7 +88,7 @@ class GUI_3 extends JFrame implements ActionListener {
             enter_password.setText("  "); 
         } 
     }
-    private void makeOpened() {
+    public void makeOpened() {
     	//unlocked view
     	
     	opened_panel = new JPanel();

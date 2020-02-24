@@ -20,7 +20,7 @@ public class PasswordGenerator {
 		this.alphabet.add(specials);
 		this.PASSWORD = generate(len);
 	}
-	private String generate(int len) {
+	public String generate(int len) {
 		String password;
 		char[] passArr = new char[len];
 		SecureRandom rand = new SecureRandom();

@@ -12,6 +12,7 @@ public class MasterPassword {
 	public MasterPassword() {
 		
 	}
+	@SuppressWarnings("unchecked")
 	public boolean authenticate(String password) {
 		ArrayList<byte[]> cipher;
 		try {
