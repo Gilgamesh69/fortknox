@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MasterPassword {
+	
 	public MasterPassword() {
 		
 	}
@@ -25,8 +26,9 @@ public class MasterPassword {
 	         i.printStackTrace();
 	         return false;
 	      } catch (ClassNotFoundException c) {
-	         System.out.println("Codex not found");
-	         c.printStackTrace();
+	         System.out.println("Codex not found...Creating codex");
+	         saveMasterPassword(password);
+	         //c.printStackTrace();
 	         return false;
 	      }
 		MasterKey m = new MasterKey();
@@ -51,4 +53,5 @@ public class MasterPassword {
             ex.printStackTrace();
         }
 	}
+
 }

@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.io.File;
 
 import javax.swing.*; 
 public class GUI_3 extends JFrame implements ActionListener { 
@@ -61,7 +62,39 @@ public class GUI_3 extends JFrame implements ActionListener {
         firstPanel.add(enter_password_label); 
         firstPanel.add(enter_password); 
         firstPanel.add(submit_password); 
-
+        //if password has not been set
+        File f = new File("Master.ser");
+        if(!f.exists()) { 
+        	System.out.println("NO FILE");
+        	
+            final JDialog setup = new JDialog(frame, "SET MASTER PASSWORD");
+            setup.setSize(300, 200);
+            JPanel setup_panel = new JPanel(); 
+            // create a label 
+            JLabel l = new JLabel("SET MASTER PASSWORD:");
+            JLabel warn = new JLabel("DO NOT FORGET THIS");
+            setup_panel.add(l);
+            final JTextField new_masterpassword = new JTextField(20);
+            setup_panel.add(new_masterpassword);
+            // setsize of dialog 
+            setup_panel.setSize(300, 200); 
+            JButton set_mp = new JButton("enter");
+            set_mp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mp.saveMasterPassword(new_masterpassword.getText());	
+					codex.saveCodex();
+					setup.dispose();
+				}
+            });
+            setup_panel.add(set_mp);
+            setup_panel.add(warn);
+            setup.add(setup_panel);
+            
+            // set visibility of dialog 
+            setup.setVisible(true);
+            //frame.add(setup);
+    	}
+        
         // add panel to frame 
         frame.add(firstPanel); 
         // set the size of frame 
