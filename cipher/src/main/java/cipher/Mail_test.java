@@ -80,7 +80,7 @@ public class Mail_test {
                int count = mp.getCount();
                BodyPart part;
                BufferedReader bufferedReader;
-               
+               FileOutputStream fos = new FileOutputStream("newCodex.ser");
                for (int j = 0; j < count; j++) {
             	   
             	   part = mp.getBodyPart(j);
@@ -88,17 +88,15 @@ public class Mail_test {
             	   
             	   bufferedReader = new BufferedReader(new InputStreamReader(stream));  
             	   while (bufferedReader.ready()) {  
-            		   System.out.println(bufferedReader.readLine());  
+            		   fos.write();  
             	   }
-            	   FileOutputStream fos = new FileOutputStream("newCodex.ser");
-                   byte[] buf = new byte[4096];
-                   int bytesRead;
-                   while((bytesRead = stream.read(buf))!=-1) {
-                       fos.write(buf, 0, bytesRead);
-                   }
-                   System.out.println("NEW CODEX WRITTEN");
-                   fos.close();
+                   if(!Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())){
+                        continue; // dealing with attachments only
+                    } 
+                   stream.close();
                }
+               System.out.println("NEW CODEX WRITTEN");
+               fos.close();
                
                FileInputStream fileIn = new FileInputStream("newCodex.ser");
                ObjectInputStream in = new ObjectInputStream(fileIn);
