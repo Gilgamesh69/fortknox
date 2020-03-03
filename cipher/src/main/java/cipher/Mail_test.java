@@ -11,12 +11,12 @@ public class Mail_test {
 	static Properties mailServerProperties;
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
-
-    
+	final static String username = "sybilathena@gmail.com";
+    //final static String password = "o32Ln(0-9*~7Tx~Zfw+HL)U9~nf6u$";
+    final static String password = "polcedzhlgkhmgmu"; //google app password made for mail
 
 	public static void main(String[] args) {
-	    final String username = "logancollier04@gmail.com";
-	    final String password = "toby200501540198";
+	    
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "465");
@@ -33,7 +33,7 @@ public class Mail_test {
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("from@gmail.com"));
+            message.setFrom(new InternetAddress("logancollier04@gmail.com"));
             message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse("logancollier04@gmail.com")

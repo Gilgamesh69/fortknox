@@ -3,17 +3,32 @@ package cipher;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+/**
+ * the basis for actually encrypting stuff
+ * @author logan.collier
+ *
+ */
 public class MasterKey {
+	/**
+	 * RSA key generation
+	 */
+	/**
+	 * EXPERIMENTAL
+	 */
 	private final BigInteger P;
 	private final BigInteger Q;
 	private final BigInteger PHI;
 	private final BigInteger E; 
 	private final BigInteger D;
+	/**
+	 * standard
+	 */
 	private final long p;
 	private final long q;
 	private final long phi;
 	private final long e;
 	private final long d;
+	
 	public MasterKey() {
 		this.P = new BigInteger("159702096302721518502217797916882856511940503316097543596398144178223857360257495581521002987785702021018665718329068502501545946585622614725939384318517427709845810865203640263612947935368317103501208950324860707808566159045071990341364440640822967439950578538737534129940339707401493649699424788338661919733");
 		this.Q = new BigInteger("153389497071233957177226304122987682316379786994009089137806229113161366224970466696378839289564990369317961902359062104601469158241621304833684512828979959298319034705796139659604272828394491914584481342590267751043875860559085175419787337254761840976155440174801937788716819091758481350449235167218677968069");
@@ -26,6 +41,12 @@ public class MasterKey {
 		this.e = 3672862351L;
 		this.d = 4027632403L;
 	}
+	/**
+	 * EXPERIMENTAL:
+	 * bigger encryption not working yet
+	 * @param text
+	 * @return
+	 */
 	public ArrayList<byte[]> encryptBIG(String text) {
 		char[] plain = text.toCharArray();
 		ArrayList<byte[]> digest = new ArrayList<byte[]>();
@@ -40,6 +61,12 @@ public class MasterKey {
 		}
 		return digest;
 	}
+	/**
+	 * EXPERIMENTAL:
+	 * 
+	 * @param cipher
+	 * @return
+	 */
 	public String decryptBIG(ArrayList<byte[]> cipher) {
 		BigInteger tmp;
 		char[] plain = new char[cipher.size()];
@@ -60,6 +87,11 @@ public class MasterKey {
 		}
 		return String.copyValueOf(plain);
 	}
+	/**
+	 * standard encrypting a string
+	 * @param text
+	 * @return
+	 */
 	public ArrayList<byte[]> encrypt(String text){
 		char[] plain = text.toCharArray();
 		ArrayList<byte[]> digest = new ArrayList<byte[]>();
@@ -73,6 +105,11 @@ public class MasterKey {
 		}
 		return digest;
 	}
+	/**
+	 * standard decrypt
+	 * @param cipher
+	 * @return
+	 */
 	public String decrypt(ArrayList<byte[]> cipher) {
 		BigInteger tmp;
 		BigInteger dd = BigInteger.valueOf(this.d);

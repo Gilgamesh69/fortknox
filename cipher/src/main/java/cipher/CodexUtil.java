@@ -8,6 +8,12 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * controls the loading /saving the codex file
+ * 
+ * @author logan.collier
+ *
+ */
 public class CodexUtil {
 	
 	
