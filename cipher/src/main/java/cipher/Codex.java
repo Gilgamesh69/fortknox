@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class Codex implements java.io.Serializable{
 
 	private static final long serialVersionUID = -7578649689932420582L;
+	public int version = 0;
 	public HashMap<String,ArrayList<byte[]>> codex;
 	public int length;
 	private int digest;

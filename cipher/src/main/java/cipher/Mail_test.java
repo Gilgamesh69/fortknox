@@ -34,7 +34,7 @@ public class Mail_test {
     
     
 	public static void main(String[] args) {
-		send_updated_codex();
+		//send_updated_codex();
 		retrieve_updated_codex();
 
 		
@@ -42,61 +42,74 @@ public class Mail_test {
 	}
 	public static void retrieve_updated_codex() {
 		try {
-	         // create properties field
-	         Properties properties = new Properties();
-	         properties.put("mail.store.protocol", "pop3");
-	         properties.put("mail.pop3.host", host);
-	         properties.put("mail.pop3.port", "995");
-	         properties.put("mail.pop3.starttls.enable", "true");
-	         Session emailSession = Session.getDefaultInstance(properties);
-	         // emailSession.setDebug(true);
+			
+         // create properties field
+         Properties properties = new Properties();
+         properties.put("mail.store.protocol", "pop3");
+         properties.put("mail.pop3.host", host);
+         properties.put("mail.pop3.port", "995");
+         properties.put("mail.pop3.starttls.enable", "true");
+         Session emailSession = Session.getDefaultInstance(properties);
+         // emailSession.setDebug(true);
 
-	         // create the POP3 store object and connect with the pop server
-	         Store store = emailSession.getStore("pop3s");
+         // create the POP3 store object and connect with the pop server
+         Store store = emailSession.getStore("pop3s");
 
-	         store.connect(host, username, password);
+         store.connect(host, username, password);
 
-	         // create the folder object and open it
-	         Folder emailFolder = store.getFolder("INBOX");
-	         emailFolder.open(Folder.READ_ONLY);
+         // create the folder object and open it
+         Folder emailFolder = store.getFolder("INBOX");
+         emailFolder.open(Folder.READ_ONLY);
 
-	         BufferedReader reader = new BufferedReader(new InputStreamReader(
-		      System.in));
+         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-	         // retrieve the messages from the folder in an array and print it
-	         Message[] messages = emailFolder.getMessages();
-	         System.out.println("messages.length---" + messages.length);
+         // retrieve the messages from the folder in an array and print it
+         Message[] messages = emailFolder.getMessages();
+         System.out.println("messages.length---" + messages.length);
 
-	         //for (int i = 0; i < messages.length; i++) {
+         //for (int i = 0; i < messages.length; i++) {
             Message message = messages[messages.length-1]; //get latest email
             System.out.println("---------------------------------");
             //writePart(message);
             System.out.println("CONTENT-TYPE: " + message.getContentType());
-          //check if the content has attachment
+            
+          //check if the content has attachment aka will be of type multipart
            if (message.isMimeType("multipart/*")) {
                System.out.println("This is a Multipart");
                System.out.println("---------------------------");
                Multipart mp = (Multipart) message.getContent();
-               int count = mp.getCount();
-               BodyPart part;
-               BufferedReader bufferedReader;
-               FileOutputStream fos = new FileOutputStream("newCodex.ser");
-               for (int j = 0; j < count; j++) {
-            	   
-            	   part = mp.getBodyPart(j);
-            	   InputStream stream = part.getInputStream();  
-            	   
-            	   bufferedReader = new BufferedReader(new InputStreamReader(stream));  
-            	   while (bufferedReader.ready()) {  
-            		   fos.write();  
-            	   }
-                   if(!Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())){
-                        continue; // dealing with attachments only
-                    } 
-                   stream.close();
-               }
-               System.out.println("NEW CODEX WRITTEN");
-               fos.close();
+               /**
+                *  iterate through each part in the multipart to identify which part contains the attachment
+                *  
+                *  The MimeBodyPart class provides methods for retrieving and storing attached file,
+                *  but the way is different between JavaMail 1.3 and JavaMail 1.4.
+                *  
+                *  In JavaMail 1.3, we have to read bytes from an InputStream which can be obtained from 
+                *  the method getInputStream() of the class MimeBodyPart, and write those bytes into an OutputStream,
+                *  
+                */
+               for (int i = 0; i < mp.getCount(); i++) {
+            	    MimeBodyPart part = (MimeBodyPart) mp.getBodyPart(i);
+            	    if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
+            	        // this part is attachment
+            	        // code to save attachment...
+            	    	// save an attachment from a MimeBodyPart to a file
+            	    	String destFilePath = "newCodex.ser";
+            	    	 
+            	    	FileOutputStream output = new FileOutputStream(destFilePath);
+            	    	 
+            	    	InputStream input = part.getInputStream();
+            	    	 
+            	    	byte[] buffer = new byte[4096];
+            	    	 
+            	    	int byteRead;
+            	    	 
+            	    	while ((byteRead = input.read(buffer)) != -1) {
+            	    	    output.write(buffer, 0, byteRead);
+            	    	}
+            	    	output.close();
+            	    }
+            	}
                
                FileInputStream fileIn = new FileInputStream("newCodex.ser");
                ObjectInputStream in = new ObjectInputStream(fileIn);
