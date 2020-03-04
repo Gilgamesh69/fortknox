@@ -121,6 +121,7 @@ public class GUI_3 extends JFrame implements ActionListener {
             enter_password.setText("  "); 
         } 
     }
+    
     public void makeOpened() {
     	//unlocked view
     	

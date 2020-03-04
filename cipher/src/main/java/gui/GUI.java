@@ -90,7 +90,8 @@ public class GUI extends JFrame{
     }
     
     /**
-     * Opens up the file chooser for selecting a file which stores your 
+     * Opens up the file chooser for selecting a file which stores the encrypted passwords. 
+     * Then calls the load file function.
      */
     private void chooseFile() {
         JFileChooser chooser = new JFileChooser();
@@ -112,8 +113,12 @@ public class GUI extends JFrame{
         cont.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!password.getText().isEmpty()) {
-                    //masterPassword.saveMasterPassword(password.getText());
-                    //codex.saveCodex();
+                    String saveLocation = chooseFilePath();
+                    if (saveLocation != null) {
+                        System.out.println(saveLocation);
+                        masterPassword.saveMasterPassword(password.getText(), saveLocation);
+                        codex.saveCodex();
+                    }
                 } else {
                     displayMessage("Entered password is empty.");
                 }
@@ -130,6 +135,22 @@ public class GUI extends JFrame{
         createFilePanel.add(cancel, BorderLayout.SOUTH);
         createFilePanel.add(cont, BorderLayout.SOUTH);
         return createFilePanel;
+    }
+    
+    /**
+     * Allows the selection of a file path through a JFileChooser.
+     * @return the selected filepath.
+     */
+    private String chooseFilePath() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setDialogTitle("Select file save location");
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile().getAbsolutePath();
+        } else {
+            return null;
+        }
     }
     
     /**
