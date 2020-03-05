@@ -34,21 +34,29 @@ public class Mail_test {
     
     
 	public static void main(String[] args) {
-		send_updated_codex();
+		//send_updated_codex();
 		retrieve_updated_codex();
 	}
 	public static void retrieve_updated_codex() {
 		try {
 			
          // create properties field
-         Properties properties = new Properties();
-         properties.put("mail.store.protocol", "pop3");
-         properties.put("mail.pop3.host", host);
-         properties.put("mail.pop3.port", "995");
-         properties.put("mail.pop3.starttls.enable", "true");
-         Session emailSession = Session.getDefaultInstance(properties);
+         Properties prop = new Properties();
+         
+ 		//prop.put("mail.smtp.host", "smtp.gmail.com");
+        //prop.put("mail.smtp.port", "465");
+        //prop.put("mail.smtp.auth", "true");
+        //prop.put("mail.smtp.socketFactory.port", "465");
+        //prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+         
+         
+         prop.put("mail.store.protocol", "pop3");
+         prop.put("mail.pop3.host", host);
+         prop.put("mail.pop3.port", "995");
+         prop.put("mail.pop3.starttls.enable", "true");
+         Session emailSession = Session.getDefaultInstance(prop);
          // create the POP3 store object and connect with the pop server
-         Store store = emailSession.getStore("pop3s");
+         Store store = emailSession.getStore("imaps");
          store.connect(host, username, password);
 
          // create the folder object and open it
@@ -61,7 +69,6 @@ public class Mail_test {
          // iterate through inbox to find the last fortknox message
          for (int i = messages.length-1; i >= 0; i--) {
 	            Message message = messages[i]; //get latest email
-
 	            if(message.getSubject().contentEquals("FORTKNOX UPDATER")) {
 		            //System.out.println(message.getDescription());
 		            System.out.println(message.getSentDate());
@@ -113,10 +120,10 @@ public class Mail_test {
 		               in.close();
 		               System.out.println(codex.keySet());
 		            } 
+	            }else {
+	            	continue;
 	            }
-            
-           
-	         
+
 	        }
 
 	         // close the store and folder objects
@@ -145,6 +152,8 @@ public class Mail_test {
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.socketFactory.port", "465");
         prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        
+        
         Session session = Session.getInstance(prop,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -164,7 +173,7 @@ public class Mail_test {
             message.setText("Dear Mail Crawler,"
                     + "\n\n Please do not spam my email!");
             MimeBodyPart messageBody = new MimeBodyPart();
-            String filename = "codex.ser";
+            String filename = "newCodex.ser";
             DataSource source = new FileDataSource(filename);
             messageBody.setDataHandler(new DataHandler(source));
             messageBody.setFileName(filename);

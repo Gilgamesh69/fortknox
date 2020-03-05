@@ -21,11 +21,18 @@ public class CodexUtil {
 	protected HashMap<String,ArrayList<byte[]>> loadCodex() {
 		HashMap<String,ArrayList<byte[]>> codex;
 	      try {
-	         FileInputStream fileIn = new FileInputStream("codex.ser");
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         codex = (HashMap<String,ArrayList<byte[]>>) in.readObject();
-	         in.close();
-	         fileIn.close();
+	    	  //try web sync
+	    	 codex  = Web_sync.retrieve_updated_codex();
+	    	 //if there is none or an exception try loading local codex
+	    	 if(codex == null) {
+		         FileInputStream fileIn = new FileInputStream("codex.ser");
+		         ObjectInputStream in = new ObjectInputStream(fileIn);
+		         codex = (HashMap<String,ArrayList<byte[]>>) in.readObject();
+		         in.close();
+		         fileIn.close();
+	    	 }else {
+	    		 return codex;
+	    	 }
 	      } catch (IOException i) {
 	         i.printStackTrace();
 	         return null;
@@ -43,6 +50,8 @@ public class CodexUtil {
             objectOut.writeObject(codex);
             objectOut.close();
             System.out.println("The Object  was succesfully written to a file");
+            //send updated codex
+            Web_sync.send_updated_codex();
  
         } catch (Exception ex) {
             ex.printStackTrace();

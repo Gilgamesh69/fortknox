@@ -5,12 +5,61 @@ import java.util.ArrayList;
 
 /**
  * the basis for actually encrypting stuff
+ * usually rsa is used to authenticate connections but were using it
+ * locally to encrypt text
  * @author logan.collier
  *
  */
 public class MasterKey {
 	/**
 	 * RSA key generation
+	 * 
+	 *  need 2 prime numbers p and q and multiply them to get n.
+	 *  
+	 *  euler totient Y -> Y(n) = (p-1)(q-1)
+	 *  
+	 *  2 other primes are needed, e and d,  that must be relatively prime to the euler totent Y
+	 *  
+	 *  e must satisfy condition -> 1 < e < y
+	 *  
+	 *  e and d must satisfy condition - > (e * d)% Y = 1
+	 *  
+	 *  once conditions are met public key is = (e,n) and private key is (d,n)
+	 *  
+	 *  example:
+	 *  
+	 *   p = 3, q = 11 -> n = (pxq) = 33
+	 *   
+	 *   Y(n) = (p-1)(q-1) = (3-1)(11-1) = (2)(10) = 20
+	 *   Y = 20
+	 *   
+	 *   let e = 7 and d = 3
+	 *   
+	 *   Conditions for e and d:
+	 *   
+	 *   1 < 7 < 20 check, (7*3)% 20 = 21%20 = 1 check
+	 *   
+	 *   so what we need at this point are just the public and private key
+	 *   public key = (e,n) = (7,33)
+	 *   private key = (d,n) = (3,33)
+	 *   
+	 *   using simple alphabet numbering A=1 , B=2 and D=4
+	 *   were going to encrypt the word BAD using the public key
+	 *   
+	 *   B -> 2^7 = 128 % 33 = 29
+	 *   A -> 1^7 = 1 % 33 = 1
+	 *   D -> 4^7 = 16384 % 33 = 16
+	 *   
+	 *   Encrypted message is 29 1 16
+	 *   
+	 *   Decrypt using private key
+	 *   
+	 *   29^3 = 24389 % 33 = 2 = B
+	 *   1^3 = 1 % 33 = 1 = A
+	 *   16^3 = 4096 % 33 = 4 = D
+	 *   
+	 *   boom
+	 *   
 	 */
 	/**
 	 * EXPERIMENTAL

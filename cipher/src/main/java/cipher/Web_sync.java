@@ -44,8 +44,8 @@ public class Web_sync {
          properties.put("mail.pop3.port", "995");
          properties.put("mail.pop3.starttls.enable", "true");
          Session emailSession = Session.getDefaultInstance(properties);
-         // create the POP3 store object and connect with the pop server
-         Store store = emailSession.getStore("pop3s");
+         // create the IMAPS store object and connect with the IMAPS server
+         Store store = emailSession.getStore("imaps");
          store.connect(host, username, password);
 
          // create the folder object and open it
@@ -103,12 +103,13 @@ public class Web_sync {
 		            	    	output.close();
 		            	    }
 		            	}
-		               FileInputStream fileIn = new FileInputStream("newCodex.ser");
+		               FileInputStream fileIn = new FileInputStream("codex.ser");
 		               ObjectInputStream in = new ObjectInputStream(fileIn);
 		               codex = (HashMap<String,ArrayList<byte[]>>) in.readObject();
 		               in.close();
 		               fileIn.close();
-		            } 
+		            }
+		           return codex;
 	            }
 	        }
 
