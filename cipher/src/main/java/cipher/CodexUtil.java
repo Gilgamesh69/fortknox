@@ -21,6 +21,7 @@ public class CodexUtil {
 	protected HashMap<String,ArrayList<byte[]>> loadCodex() {
 		HashMap<String,ArrayList<byte[]>> codex;
 	      try {
+	    	  
 	    	  //try web sync
 	    	 codex  = Web_sync.retrieve_updated_codex();
 	    	 //if there is none or an exception try loading local codex

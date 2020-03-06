@@ -71,13 +71,24 @@ public class GUI_3 extends JFrame implements ActionListener {
             setup.setSize(300, 200);
             JPanel setup_panel = new JPanel(); 
             // create a label 
-            JLabel l = new JLabel("SET MASTER PASSWORD:");
+            JLabel set_master_label = new JLabel("SET MASTER PASSWORD:");
             JLabel warn = new JLabel("DO NOT FORGET THIS");
-            setup_panel.add(l);
+            setup_panel.add(set_master_label);
             final JTextField new_masterpassword = new JTextField(20);
             setup_panel.add(new_masterpassword);
+            
+            JCheckBox checkBox1 = new JCheckBox("Enable Web Sync");  
+            JLabel set_email_sync_label = new JLabel("TO ENABLE WEB SYNC ACROSS DEVICES WITH GMAIL\n"
+            		+ "STEP 1: go to manage google account and then security and set 2-step verification\n"
+            		+ "STEP 2: go back to security and select App passwords"
+            		+ "STEP 3: on Select app put Mail, under select device put other,next type Fortknox or whatever"
+            		+ "STEP 4: copy the password given and put in text box below");
+            setup_panel.add(set_email_sync_label);
+            JTextField add_email_app_password = new JTextField(20);
+            
+            
             // setsize of dialog 
-            setup_panel.setSize(300, 200); 
+            setup_panel.setSize(400, 300); 
             JButton set_mp = new JButton("enter");
             set_mp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -89,10 +100,10 @@ public class GUI_3 extends JFrame implements ActionListener {
             setup_panel.add(set_mp);
             setup_panel.add(warn);
             setup.add(setup_panel);
-            
-            // set visibility of dialog 
             setup.setVisible(true);
-            //frame.add(setup);
+            
+            
+            
     	}
         
         // add panel to frame 
