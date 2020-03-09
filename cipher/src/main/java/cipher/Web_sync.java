@@ -23,10 +23,12 @@ import java.util.Properties;
  *
  */
 public class Web_sync {
-	
-	
-	private final static String username = "sybilathena@gmail.com"; //the email address to send to
-    private final static String password = "polcedzhlgkhmgmu"; //google app password made for mail
+	private static AppSettings settings = new AppSettings();
+	private final static String username = settings.getEmail_addy();
+	private final static String password = settings.getApp_password();
+	private final static String inbox = settings.getEmail_inbox();
+	//private final static String username = "sybilathena@gmail.com"; //the email address to send to
+    //private final static String password = "polcedzhlgkhmgmu"; //google app password made for mail
     private static String host = "pop.gmail.com";// change accordingly
     
     /**
@@ -35,6 +37,8 @@ public class Web_sync {
      */
 	public static HashMap<String, ArrayList<byte[]>> retrieve_updated_codex() {
 		HashMap<String, ArrayList<byte[]>> codex = null;
+		if(!settings.isWeb_sync())
+			return codex;
 		try {
 			
          // create properties field
@@ -49,7 +53,8 @@ public class Web_sync {
          store.connect(host, username, password);
 
          // create the folder object and open it
-         Folder emailFolder = store.getFolder("INBOX");
+         //Folder emailFolder = store.getFolder("INBOX");
+         Folder emailFolder = store.getFolder(inbox);
          emailFolder.open(Folder.READ_ONLY);
 
          // retrieve the messages from the folder in an array and print it
@@ -133,47 +138,48 @@ public class Web_sync {
 	 * uses SSL 
 	 */
 	public static void send_updated_codex() {
-		
-		Properties prop = new Properties();
-		prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.socketFactory.port", "465");
-        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        Session session = Session.getInstance(prop,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(username)
-            );
-            message.setSubject("FORTKNOX UPDATER");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n Please do not spam my email!");
-            MimeBodyPart messageBody = new MimeBodyPart();
-            String filename = "codex.ser";
-            DataSource source = new FileDataSource(filename);
-            messageBody.setDataHandler(new DataHandler(source));
-            messageBody.setFileName(filename);
-            Multipart multipart = new MimeMultipart();
-            // Set text message part
-            multipart.addBodyPart(messageBody);
-            message.setContent(multipart);
-
-            Transport.send(message);
-            System.out.println("sent...");
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+		if(settings.isWeb_sync()) {
+			Properties prop = new Properties();
+			prop.put("mail.smtp.host", "smtp.gmail.com");
+	        prop.put("mail.smtp.port", "465");
+	        prop.put("mail.smtp.auth", "true");
+	        prop.put("mail.smtp.socketFactory.port", "465");
+	        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	        Session session = Session.getInstance(prop,
+	                new javax.mail.Authenticator() {
+	                    protected PasswordAuthentication getPasswordAuthentication() {
+	                        return new PasswordAuthentication(username, password);
+	                    }
+	                });
+	
+	        try {
+	
+	            Message message = new MimeMessage(session);
+	            message.setFrom(new InternetAddress(username));
+	            message.setRecipients(
+	                    Message.RecipientType.TO,
+	                    InternetAddress.parse(username)
+	            );
+	            message.setSubject("FORTKNOX UPDATER");
+	            message.setText("Dear Mail Crawler,"
+	                    + "\n\n Please do not spam my email!");
+	            MimeBodyPart messageBody = new MimeBodyPart();
+	            String filename = "codex.ser";
+	            DataSource source = new FileDataSource(filename);
+	            messageBody.setDataHandler(new DataHandler(source));
+	            messageBody.setFileName(filename);
+	            Multipart multipart = new MimeMultipart();
+	            // Set text message part
+	            multipart.addBodyPart(messageBody);
+	            message.setContent(multipart);
+	
+	            Transport.send(message);
+	            System.out.println("sent...");
+	
+	        } catch (MessagingException e) {
+	            e.printStackTrace();
+	        }
+		}
 		
 	}
 
