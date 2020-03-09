@@ -13,6 +13,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -51,7 +53,82 @@ public class AppSettings {
 	public String getEmail_inbox() {
 		return this.email_inbox;
 	}
-
+	/****** SETTERS *******/
+	
+	public void set_webSync(boolean sync) {
+		this.web_sync = sync;
+	}
+	public void set_email_address(String newAddress) {
+		this.email_addy = newAddress;
+	}
+	public void set_app_password(String newPassword) {
+		this.app_password = newPassword;
+	}
+	public void set_inbox(String newInbox) {
+		this.email_inbox = newInbox;
+	}
+	public void updateSettings() {
+		File file = new File("AppSettings.xml");
+		if(file.exists()) {
+			try {
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = null;
+				try {
+					dBuilder = dbFactory.newDocumentBuilder();
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Document doc = null;
+	
+				doc = dBuilder.parse(file);
+			
+				Node App = doc.getFirstChild();
+				Node settings = doc.getElementsByTagName("settings").item(0);
+				NamedNodeMap att = settings.getAttributes();
+				// update staff attribute
+				Node nodeAttr = att.getNamedItem("address");
+				nodeAttr.setTextContent(this.email_addy);
+				nodeAttr = att.getNamedItem("AppPassword");
+				nodeAttr.setTextContent(this.app_password);
+				nodeAttr = att.getNamedItem("inbox");
+				nodeAttr.setTextContent(this.email_inbox);
+				nodeAttr = att.getNamedItem("sync");
+				if(this.web_sync)
+					nodeAttr.setTextContent("true");
+				else
+					nodeAttr.setTextContent("false");
+				
+				System.out.println("Settings changed successfully");
+				
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	             Transformer transformer = null;
+				try {
+					transformer = transformerFactory.newTransformer();
+				} catch (TransformerConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	             DOMSource source = new DOMSource(doc);
+	             StreamResult result = new StreamResult(new File("AppSettings.xml"));
+	             transformer.transform(source, result);
+	          // Output to console for testing
+	             StreamResult consoleResult = new StreamResult(System.out);
+	             transformer.transform(source, consoleResult);
+	             
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TransformerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
 	public void getSettings() {
 		File file = new File("AppSettings.xml");
 		if(file.exists()) {
@@ -86,7 +163,8 @@ public class AppSettings {
 	            this.email_addy = att.getNamedItem("address").getTextContent();
 	            this.app_password = att.getNamedItem("AppPassword").getTextContent();
 	            this.email_inbox = att.getNamedItem("inbox").getTextContent();
-	            if(att.getNamedItem("sync").getTextContent().contains("true")) {
+	            System.out.println(att.getNamedItem("Sync").getNodeValue());
+	            if(att.getNamedItem("Sync").getTextContent().contains("true")) {
 	            	this.web_sync = true;
 	            }else {
 	            	this.web_sync = false;
@@ -147,5 +225,6 @@ public class AppSettings {
            e.printStackTrace();
         }
 	}
+	
 
 }

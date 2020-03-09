@@ -29,6 +29,8 @@ public class GUI_3 extends JFrame implements ActionListener {
     private static JPanel opened_panel;
     private static Codex codex;
     private static int new_digest = 25;
+    
+    private static AppSettings appSettings; 
     // default constructor 
     public GUI_3() { 
     } 
@@ -68,7 +70,7 @@ public class GUI_3 extends JFrame implements ActionListener {
         	System.out.println("NO FILE");
         	
             final JDialog setup = new JDialog(frame, "SET MASTER PASSWORD");
-            setup.setSize(500, 300);
+            setup.setSize(600, 300);
             JPanel setup_panel = new JPanel(); 
             // create a label 
             JLabel set_master_label = new JLabel("SET MASTER PASSWORD:");
@@ -83,7 +85,7 @@ public class GUI_3 extends JFrame implements ActionListener {
             JLabel set_email_sync_label_3 = new JLabel("STEP 2: go back to security and select App passwords");
             JLabel set_email_sync_label_4 = new JLabel("STEP 3: on Select app put Mail, under select device put other,next type Fortknox or whatever");
             JLabel set_email_sync_label_5 = new JLabel("STEP 4: copy the password given and put in text box below\n");
-            JLabel space = new JLabel("                       ");
+            JLabel space = new JLabel("                                  ");
             setup_panel.add(set_email_sync_label_1);
             setup_panel.add(set_email_sync_label_2);
             setup_panel.add(set_email_sync_label_3);
@@ -92,20 +94,20 @@ public class GUI_3 extends JFrame implements ActionListener {
             setup_panel.add(space);
             setup_panel.add(webSync_enable);
             JLabel enter_email_address = new JLabel("enter email address: ");
-            final JTextField add_email_address = new JTextField(20);
+            final JTextField add_email_address = new JTextField(30);
             setup_panel.add(enter_email_address);
             setup_panel.add(add_email_address);
             JLabel enter_app_password = new JLabel("Enter Google app password:");
-            final JTextField add_email_app_password = new JTextField(20);
+            final JTextField add_email_app_password = new JTextField(30);
             setup_panel.add(enter_app_password);
             setup_panel.add(add_email_app_password);
             JLabel enter_inbox_name = new JLabel("Enter inbox in which emails are sent: ");
-            final JTextField add_inbox = new JTextField(20);
+            final JTextField add_inbox = new JTextField(30);
             setup_panel.add(enter_inbox_name);
             setup_panel.add(add_inbox);
             
             // setsize of dialog 
-            setup_panel.setSize(500, 500); 
+            setup_panel.setSize(600, 300); 
             JButton set_mp = new JButton("enter");
             set_mp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -121,6 +123,7 @@ public class GUI_3 extends JFrame implements ActionListener {
             setup.setVisible(true);
 
     	}
+        appSettings = new AppSettings();
         
         // add panel to frame 
         frame.add(firstPanel); 
@@ -228,6 +231,49 @@ public class GUI_3 extends JFrame implements ActionListener {
         	}
         });
         top_panel.add(add_password,gbc);
+        
+        //settings button
+        JButton settings = new JButton("Settings");
+        settings.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                JDialog edit_settings = new JDialog(frame, "Settings");
+                edit_settings.setSize(400, 300);
+                JPanel settings_panel = new JPanel();
+                JLabel current_email_address = new JLabel("EMAIL ADDRESS: ");
+                JLabel current_app_password = new JLabel("Mail app password: ");
+                JLabel current_email_inbox = new JLabel("EMAIL INBOX: ");
+                final JTextField email_address_field = new JTextField(25);
+                final JTextField app_password_field = new JTextField(25);
+                final JTextField email_inbox_field = new JTextField(25);
+                final JCheckBox enabled_webSync = new JCheckBox("Enable Web Sync");
+                enabled_webSync.setEnabled(appSettings.isWeb_sync());
+                email_address_field.setText(appSettings.getEmail_addy());
+                app_password_field.setText(appSettings.getApp_password());
+                email_inbox_field.setText(appSettings.getEmail_inbox());
+                JButton save = new JButton("SAVE");
+                save.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+                		appSettings.set_email_address(email_address_field.getText());
+                		appSettings.set_app_password(app_password_field.getText());
+                		appSettings.set_inbox(email_inbox_field.getText());
+                		appSettings.set_webSync(enabled_webSync.isSelected());
+                		appSettings.updateSettings();
+                	}
+                });
+                settings_panel.add(enabled_webSync);
+                settings_panel.add(current_email_address);
+                settings_panel.add(email_address_field);
+                settings_panel.add(current_app_password);
+                settings_panel.add(app_password_field);
+                settings_panel.add(current_email_inbox);
+                settings_panel.add(email_inbox_field);
+                settings_panel.add(save);
+                edit_settings.add(settings_panel);
+                edit_settings.setVisible(true);
+        	}
+        });
+        gbc.gridx = 6;
+        top_panel.add(settings,gbc);
         
         codex.loadCodex();
         
