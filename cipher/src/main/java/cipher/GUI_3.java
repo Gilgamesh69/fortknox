@@ -32,7 +32,8 @@ public class GUI_3 extends JFrame implements ActionListener {
     
     private static AppSettings appSettings; 
     // default constructor 
-    public GUI_3() { 
+    public GUI_3() {
+    	
     } 
   
     // main class 
@@ -246,7 +247,8 @@ public class GUI_3 extends JFrame implements ActionListener {
                 final JTextField app_password_field = new JTextField(25);
                 final JTextField email_inbox_field = new JTextField(25);
                 final JCheckBox enabled_webSync = new JCheckBox("Enable Web Sync");
-                enabled_webSync.setEnabled(appSettings.isWeb_sync());
+                
+                enabled_webSync.setSelected(appSettings.isWeb_sync());
                 email_address_field.setText(appSettings.getEmail_addy());
                 app_password_field.setText(appSettings.getApp_password());
                 email_inbox_field.setText(appSettings.getEmail_inbox());

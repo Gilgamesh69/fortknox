@@ -93,7 +93,7 @@ public class AppSettings {
 				nodeAttr.setTextContent(this.app_password);
 				nodeAttr = att.getNamedItem("inbox");
 				nodeAttr.setTextContent(this.email_inbox);
-				nodeAttr = att.getNamedItem("sync");
+				nodeAttr = att.getNamedItem("Sync");
 				if(this.web_sync)
 					nodeAttr.setTextContent("true");
 				else
