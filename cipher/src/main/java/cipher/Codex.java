@@ -70,7 +70,9 @@ public class Codex implements java.io.Serializable{
 	 */
 	public void loadCodex() {
 		CodexUtil code = new CodexUtil();
+		System.out.println("LOADING CODEX");
 		this.codex = code.loadCodex();
+		System.out.println(codex.isEmpty());
 		this.length = codex.size();
 	}
 	/**
