@@ -39,7 +39,7 @@ public class Locked_Panel {
     	JButton submit_password = new JButton("Submit");
         // addActionListener to button 
         submit_password.addActionListener(new ActionListener() {
-        	Unlocked_Panel unlocked_panel = new Unlocked_Panel(GUI);
+        	unlock unlocked_panel = new unlock(GUI);
 			public void actionPerformed(ActionEvent e) {
 		        String s = e.getActionCommand(); 
 		        if (s.equals("Submit")) { 

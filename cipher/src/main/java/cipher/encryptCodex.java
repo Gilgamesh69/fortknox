@@ -17,16 +17,20 @@ public class encryptCodex {
 	public void setDigestLength(int n) {
 		this.digestLength = n;
 	}
+	public ArrayList<byte[]> cipherPassword(String password){
+		MasterKey m = new MasterKey();
+		ArrayList<byte[]> password_cipher = m.encrypt(password);
+		return password_cipher;
+	}
 	/**
 	 * calls passwordgenerator to make a new password and then encrypts it returning an arraylist<byte[]> which is the encrypted password
 	 * @return
 	 */
-	public  ArrayList<byte[]> cipherPassword(){
-		MasterKey m = new MasterKey();
+	public ArrayList<byte[]> cipher_generatedPassword(){
 		PasswordGenerator g = new PasswordGenerator(this.digestLength);
-		ArrayList<byte[]> password_cipher = m.encrypt(g.getPASSWORD());
-		return password_cipher;
+		return cipherPassword(g.getPASSWORD());
 	}
+	
 	/**
 	 * EXPERIMENTAL:
 	 * encrypts the site/service information as well

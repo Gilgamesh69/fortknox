@@ -43,8 +43,15 @@ public class Codex implements java.io.Serializable{
 	public void addPass(String site) {
 		encryptCodex ec = new encryptCodex();
 		ec.setDigestLength(this.digest);
-		codex.put(site,ec.cipherPassword());
+		codex.put(site,ec.cipher_generatedPassword());
 		this.length++;
+	}
+	public void changePass(String site,String newPassword) {
+		encryptCodex ec = new encryptCodex();
+		ec.setDigestLength(this.digest);
+		System.out.println(newPassword);
+		codex.put(site, ec.cipherPassword(newPassword));
+		System.out.println(site + " now is =>" +newPassword);
 	}
 	/**
 	 * EXPERIMENTAL:

@@ -160,6 +160,7 @@ public class AppSettings {
 	            System.out.println("\nCurrent Element :");
 	            System.out.println(nNode.getNodeName());
 	            NamedNodeMap att = nNode.getAttributes();
+	            //web sync attributes
 	            this.email_addy = att.getNamedItem("address").getTextContent();
 	            this.app_password = att.getNamedItem("AppPassword").getTextContent();
 	            this.email_inbox = att.getNamedItem("inbox").getTextContent();
@@ -175,8 +176,6 @@ public class AppSettings {
 	           // }
 			}
 		}
-
-		
 	}
 	public static void makeSettings(boolean SYNC,String EMAIL,String APP_PASS,String INBOX) {
 		try {
@@ -212,6 +211,10 @@ public class AppSettings {
              settings.setAttributeNode(inbox);
              
              rootElement.appendChild(settings);
+             
+             Element iconSettings = doc.createElement("custimization");
+             
+             
              // write the content into xml file
              TransformerFactory transformerFactory = TransformerFactory.newInstance();
              Transformer transformer = transformerFactory.newTransformer();
@@ -224,6 +227,15 @@ public class AppSettings {
         } catch (Exception e) {
            e.printStackTrace();
         }
+	}
+	public Attr create_icon_att(String site, String filepath) throws ParserConfigurationException {
+        DocumentBuilderFactory dbFactory =
+                DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.newDocument();
+        Attr ico = doc.createAttribute(site);
+        ico.setValue(filepath);
+        return ico;
 	}
 	
 

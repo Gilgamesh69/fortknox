@@ -22,7 +22,7 @@ public class GUI_frame {
         ImageIcon img = new ImageIcon("lock2.png");
     	frame.setIconImage(img.getImage());
     	//frame.setUndecorated(true);
-        frame.setSize(600, 400); 
+        frame.setSize(800, 400); 
         frame.setVisible(true);
         //first time setup
         File f = new File("Master.ser");
