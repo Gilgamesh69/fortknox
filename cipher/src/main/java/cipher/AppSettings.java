@@ -79,14 +79,13 @@ public class AppSettings {
 	public void set_inbox(String newInbox) {
 		this.email_inbox = newInbox;
 	}
-	public void updateSettings() {
+	public void updateSettings() throws SAXException, IOException {
 		File file = new File("AppSettings.xml");
 		if(file.exists()) {
 		
 	
 				this.doc = dBuilder.parse(file);
 			
-				Node App = doc.getFirstChild();
 				Node settings = doc.getElementsByTagName("settings").item(0);
 				NamedNodeMap att = settings.getAttributes();
 				// update staff attribute
@@ -114,21 +113,21 @@ public class AppSettings {
 				}
 	             DOMSource source = new DOMSource(doc);
 	             StreamResult result = new StreamResult(new File("AppSettings.xml"));
-	             transformer.transform(source, result);
+	             try {
+					transformer.transform(source, result);
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	          // Output to console for testing
 	             StreamResult consoleResult = new StreamResult(System.out);
-	             transformer.transform(source, consoleResult);
+	             try {
+					transformer.transform(source, consoleResult);
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	             
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 		}
 	}
@@ -180,14 +179,51 @@ public class AppSettings {
 			}
 		}
 	}
+	public void make_settings(boolean SYNC,String EMAIL,String APP_PASS,String INBOX) {
+		Document doc = dBuilder.newDocument();
+        //root
+        Element rootElement = doc.createElement("AppSettings");
+        doc.appendChild(rootElement);
+        //sub root web sync
+        Element sync_settings = doc.createElement("Web Sync");
+        make_webSync_settings( SYNC, EMAIL, APP_PASS, INBOX, doc, sync_settings);
+        //add sync settings
+        rootElement.appendChild(sync_settings);
+	}
+	public void make_customize_settings
+	/**
+	 * create settings for web sync
+	 * @param SYNC
+	 * @param EMAIL
+	 * @param APP_PASS
+	 * @param INBOX
+	 * @param doc
+	 * @param settings
+	 */
+	public void make_webSync_settings(boolean SYNC,String EMAIL,String APP_PASS,String INBOX, Document doc, Element settings) {
+        Attr sync = doc.createAttribute("Sync");
+        Attr email = doc.createAttribute("address");
+        Attr appPass = doc.createAttribute("AppPassword");
+        Attr inbox = doc.createAttribute("inbox");
+        if(SYNC) 
+       	 sync.setValue("true"); 
+        else 
+       	 sync.setValue("false");
+
+        email.setValue(EMAIL);
+   	 	appPass.setValue(APP_PASS);
+        inbox.setValue(INBOX);	
+        
+   	 	settings.setAttributeNode(sync);
+   	 	settings.setAttributeNode(email);
+   	 	settings.setAttributeNode(appPass);
+        settings.setAttributeNode(inbox);
+        
+        
+        
+	}
 	public static void makeSettings(boolean SYNC,String EMAIL,String APP_PASS,String INBOX) {
-		try {
-			
-	         DocumentBuilderFactory dbFactory =
-	                 DocumentBuilderFactory.newInstance();
-	                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-	                 Document doc = dBuilder.newDocument();
-             
+
              //root
              Element rootElement = doc.createElement("AppSettings");
              doc.appendChild(rootElement);
