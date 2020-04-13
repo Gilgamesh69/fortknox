@@ -10,8 +10,12 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 
-import javax.swing.*; 
+import javax.swing.*;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException; 
 public class GUI_3 extends JFrame implements ActionListener { 
     /**
 	 * 
@@ -114,7 +118,13 @@ public class GUI_3 extends JFrame implements ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					mp.saveMasterPassword(new_masterpassword.getText());	
 					codex.saveCodex();
-					AppSettings.makeSettings(webSync_enable.isSelected(), add_email_address.getText(), add_email_app_password.getText(), add_inbox.getText());
+					AppSettings app = new AppSettings();
+					try {
+						app.makeSettings(webSync_enable.isSelected(), add_email_address.getText(), add_email_app_password.getText(), add_inbox.getText());
+					} catch (TransformerException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					setup.dispose();
 				}
             });
@@ -143,11 +153,13 @@ public class GUI_3 extends JFrame implements ActionListener {
         if (s.equals("Submit")) { 
             // set the text of the label to the text of the field 
         	//enter_password_label.setText("");
-        	if(mp.authenticate(enter_password.getText()))
+        	if(mp.authenticate(enter_password.getText())) {
+        		System.out.println("OPENED");
         		makeOpened();
         		frame.setContentPane(opened_panel);
         		frame.invalidate();
         		frame.validate();
+        	}
             // set the text of field to blank 
             enter_password.setText("  "); 
         } 
@@ -259,7 +271,15 @@ public class GUI_3 extends JFrame implements ActionListener {
                 		appSettings.set_app_password(app_password_field.getText());
                 		appSettings.set_inbox(email_inbox_field.getText());
                 		appSettings.set_webSync(enabled_webSync.isSelected());
-                		appSettings.updateSettings();
+                		try {
+							appSettings.updateSettings();
+						} catch (SAXException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
                 	}
                 });
                 settings_panel.add(enabled_webSync);

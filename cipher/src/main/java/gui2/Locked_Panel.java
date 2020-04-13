@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.xml.transform.TransformerException;
 
 import cipher.AppSettings;
 import cipher.Codex;
@@ -110,7 +111,13 @@ public class Locked_Panel {
 			public void actionPerformed(ActionEvent e) {
 				mp.saveMasterPassword(new_masterpassword.getText());	
 				codex.saveCodex();
-				AppSettings.makeSettings(webSync_enable.isSelected(), add_email_address.getText(), add_email_app_password.getText(), add_inbox.getText());
+				AppSettings app = new AppSettings();
+				try {
+					app.makeSettings(webSync_enable.isSelected(), add_email_address.getText(), add_email_app_password.getText(), add_inbox.getText());
+				} catch (TransformerException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				setup.dispose();
 			}
         });
