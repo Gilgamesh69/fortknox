@@ -28,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import org.xml.sax.SAXException;
+
 import cipher.AppSettings;
 import cipher.Codex;
 import cipher.MasterPassword;
@@ -150,7 +152,15 @@ public class unlock {
                 		appSettings.set_app_password(app_password_field.getText());
                 		appSettings.set_inbox(email_inbox_field.getText());
                 		appSettings.set_webSync(enabled_webSync.isSelected());
-                		appSettings.updateSettings();
+                		try {
+							appSettings.updateSettings();
+						} catch (SAXException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
                 	}
                 });
                 settings_panel.add(enabled_webSync);

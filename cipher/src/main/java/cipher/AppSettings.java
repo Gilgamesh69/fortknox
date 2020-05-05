@@ -84,10 +84,11 @@ public class AppSettings {
 		File file = new File("AppSettings.xml");
 		if(file.exists()) {
 		
-	
+				System.out.println("APP SETTINGS EXSIST");
 				this.doc = dBuilder.parse(file);
-			
+				//System.out.println("ITEM: "+doc.getElementsByTagName("settings").);
 				Node settings = doc.getElementsByTagName("settings").item(0);
+				
 				NamedNodeMap att = settings.getAttributes();
 				// update staff attribute
 				Node nodeAttr = att.getNamedItem("address");
@@ -113,6 +114,7 @@ public class AppSettings {
 					e.printStackTrace();
 				}
 	             DOMSource source = new DOMSource(doc);
+	             System.out.println("STREAM SETTINGS::");
 	             StreamResult result = new StreamResult(new File("AppSettings.xml"));
 	             try {
 					transformer.transform(source, result);
@@ -127,9 +129,11 @@ public class AppSettings {
 				} catch (TransformerException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-	             
-			
+				}		
+		}
+		else {
+		
+			make_settings(false,"","","");
 		}
 	}
 	public void getSettings() {
@@ -178,6 +182,16 @@ public class AppSettings {
 	            //	System.out.println(t.getNodeName()+" "+t.getNodeValue());
 	           // }
 			}
+		}else {
+			make_settings(false,"","","");
+		}
+	}
+	public boolean settingsSet() {
+		File file = new File("AppSettings.xml");
+		if(file.exists()) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	public void make_settings(boolean SYNC,String EMAIL,String APP_PASS,String INBOX) {
@@ -186,11 +200,30 @@ public class AppSettings {
         Element rootElement = doc.createElement("AppSettings");
         doc.appendChild(rootElement);
         //sub root web sync
-        Element sync_settings = doc.createElement("Web Sync");
+        Element sync_settings = doc.createElement("WebSync");
         make_webSync_settings( SYNC, EMAIL, APP_PASS, INBOX, doc, sync_settings);
         //add sync settings
         rootElement.appendChild(sync_settings);
         Element customize_settings = doc.createElement("Customize");
+        File settings = new File("AppSettings.xml");
+
+    	StreamResult result = new StreamResult(settings);
+        DOMSource source = new DOMSource(doc);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        
+		try {
+			transformer = transformerFactory.newTransformer();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void make_customize_settings(Document doc, Element customize_settings) {
 		

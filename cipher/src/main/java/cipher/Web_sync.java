@@ -37,8 +37,10 @@ public class Web_sync {
      */
 	public static HashMap<String, ArrayList<byte[]>> retrieve_updated_codex() {
 		HashMap<String, ArrayList<byte[]>> codex = null;
-		if(!settings.isWeb_sync())
+		if(!settings.isWeb_sync()) {
+			System.out.println("WEB SYNC: NOT WEB SYNCED");
 			return codex;
+		}
 		try {
 			
          // create properties field

@@ -120,6 +120,7 @@ public class GUI_3 extends JFrame implements ActionListener {
 					codex.saveCodex();
 					AppSettings app = new AppSettings();
 					try {
+						System.out.println("GENERATING APP SETTINGS");
 						app.makeSettings(webSync_enable.isSelected(), add_email_address.getText(), add_email_app_password.getText(), add_inbox.getText());
 					} catch (TransformerException e1) {
 						// TODO Auto-generated catch block
@@ -267,12 +268,14 @@ public class GUI_3 extends JFrame implements ActionListener {
                 JButton save = new JButton("SAVE");
                 save.addActionListener(new ActionListener() {
                 	public void actionPerformed(ActionEvent e) {
+                		//System.out.println("UPDATING APP SETTINGS");
                 		appSettings.set_email_address(email_address_field.getText());
                 		appSettings.set_app_password(app_password_field.getText());
                 		appSettings.set_inbox(email_inbox_field.getText());
                 		appSettings.set_webSync(enabled_webSync.isSelected());
                 		try {
 							appSettings.updateSettings();
+							//System.out.println("SETTINGS UPDATED SUCESSFULLY");
 						} catch (SAXException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

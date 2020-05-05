@@ -26,9 +26,9 @@ public class Mail_test {
 	private static Properties mailServerProperties;
 	private static Session getMailSession;
 	private static MimeMessage generateMailMessage;
-	private final static String username = "sybilathena@gmail.com";
+	private final static String username = "logancollier04@gmail.com";
     //final static String password = "o32Ln(0-9*~7Tx~Zfw+HL)U9~nf6u$";
-    private final static String password = "polcedzhlgkhmgmu"; //google app password made for mail
+    private final static String password = "rpwxywrliembxrfg"; //google app password made for mail
     private static String host = "pop.gmail.com";// change accordingly
     private String mailStoreType = "pop3";
     
