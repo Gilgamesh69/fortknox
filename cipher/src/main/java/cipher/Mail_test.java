@@ -27,15 +27,15 @@ public class Mail_test {
 	private static Session getMailSession;
 	private static MimeMessage generateMailMessage;
 	private final static String username = "logancollier04@gmail.com";
-    //final static String password = "o32Ln(0-9*~7Tx~Zfw+HL)U9~nf6u$";
-    private final static String password = "rpwxywrliembxrfg"; //google app password made for mail
+    //final static String Password = "k1bk5aL0kF164HfM5)ee2p6-i&I)WZ";
+    private final static String password = "agykrqvzpkrqjglj"; //google app password made for mail
     private static String host = "pop.gmail.com";// change accordingly
     private String mailStoreType = "pop3";
     
     
 	public static void main(String[] args) {
-		//send_updated_codex();
-		retrieve_updated_codex();
+		send_updated_codex();
+		//retrieve_updated_codex();
 	}
 	public static void retrieve_updated_codex() {
 		try {
@@ -153,7 +153,7 @@ public class Mail_test {
         prop.put("mail.smtp.socketFactory.port", "465");
         prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         
-        
+        System.out.println("SENDING EMAIL");
         Session session = Session.getInstance(prop,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -173,7 +173,7 @@ public class Mail_test {
             message.setText("Dear Mail Crawler,"
                     + "\n\n Please do not spam my email!");
             MimeBodyPart messageBody = new MimeBodyPart();
-            String filename = "newCodex.ser";
+            String filename = "codex.ser";
             DataSource source = new FileDataSource(filename);
             messageBody.setDataHandler(new DataHandler(source));
             messageBody.setFileName(filename);
@@ -187,6 +187,7 @@ public class Mail_test {
 
         } catch (MessagingException e) {
             e.printStackTrace();
+            System.out.println("NOT SENT");
         }
 		
 	}

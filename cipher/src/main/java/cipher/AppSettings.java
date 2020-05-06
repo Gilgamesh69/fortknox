@@ -87,8 +87,9 @@ public class AppSettings {
 				System.out.println("APP SETTINGS EXSIST");
 				this.doc = dBuilder.parse(file);
 				//System.out.println("ITEM: "+doc.getElementsByTagName("settings").);
-				Node settings = doc.getElementsByTagName("settings").item(0);
-				
+				Node settings = doc.getElementsByTagName("WebSync").item(0);
+				Node webSync = settings.getFirstChild();
+				//System.out.println(webSync.getLocalName());
 				NamedNodeMap att = settings.getAttributes();
 				// update staff attribute
 				Node nodeAttr = att.getNamedItem("address");
@@ -158,20 +159,24 @@ public class AppSettings {
 				e.printStackTrace();
 			}
 			doc.getDocumentElement().normalize();
-			System.out.print("Root element: ");
+			System.out.print("APP; Root element: ");
 			System.out.println(doc.getDocumentElement().getNodeName());
-			NodeList nList = doc.getElementsByTagName("settings");
-
+			NodeList nList = doc.getElementsByTagName("WebSync");
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 	            Node nNode = nList.item(temp);
 	            System.out.println("\nCurrent Element :");
 	            System.out.println(nNode.getNodeName());
 	            NamedNodeMap att = nNode.getAttributes();
+	           
+	            
 	            //web sync attributes
 	            this.email_addy = att.getNamedItem("address").getTextContent();
 	            this.app_password = att.getNamedItem("AppPassword").getTextContent();
 	            this.email_inbox = att.getNamedItem("inbox").getTextContent();
-	            System.out.println(att.getNamedItem("Sync").getNodeValue());
+	            
+	            System.out.println("ADDY: "+att.getNamedItem("address").getTextContent());
+	            System.out.println("PASS: "+att.getNamedItem("AppPassword").getTextContent());
+	            System.out.println("INBO: "+att.getNamedItem("inbox").getTextContent());
 	            if(att.getNamedItem("Sync").getTextContent().contains("true")) {
 	            	this.web_sync = true;
 	            }else {
